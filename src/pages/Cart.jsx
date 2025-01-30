@@ -1,13 +1,14 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { pizzaCart } from "../pizzas"
+import { CartContext } from "../context/CartContext"
 
 /* FUNCIÓN PARA CALCULAR EL TOTAL A PAGAR */
 const total = (accumulator, currentValue) => accumulator + currentValue.price * currentValue.count
 
 /* FUNCIÓN PARA DECREMENTAR CANTIDAD DE PIZZAS EN EL CARRITO */
-const decPizzaCount = (cart, setCart, pizza) => {
+const decPizzaCount = (cartLocal, setCartLocal, pizza, cart, setCart) => {
     // Guarda el contenido actual que hay en el carrito de compras
-    const newCart = [...cart]
+    const newCart = [...cartLocal]
 
     // Identifica el elemento pizza en el que se desea actualizar los valores de count & price
     const index = newCart.findIndex((elePizza) => elePizza.id === pizza.id)
@@ -19,13 +20,16 @@ const decPizzaCount = (cart, setCart, pizza) => {
     // newCart[index].price += pizza.price
 
     // Actualiza estado de cart
+    setCartLocal(newCart)
+
+    // Actualizar estado de cart en el Context - Provider
     setCart(newCart)
 }
 
 /* FUNCIÓN PARA AUMENTAR CANTIDAD DE PIZZAS EN EL CARRITO */
-const incPizzaCount = (cart, setCart, pizza) => {
+const incPizzaCount = (cartLocal, setCartLocal, pizza, cart, setCart) => {
     // Guarda el contenido actual que hay en el carrito de compras
-    const newCart = [...cart]
+    const newCart = [...cartLocal]
 
     // Identifica el elemento pizza en el que se desea actualizar los valores de count & price
     const index = newCart.findIndex((elePizza) => elePizza.id === pizza.id)
@@ -34,7 +38,10 @@ const incPizzaCount = (cart, setCart, pizza) => {
     newCart[index].count++
     // newCart[index].price += pizza.price
 
-    // Actualiza estado de cart
+    // Actualiza estado local de cart
+    setCartLocal(newCart)
+
+    // Actualizar estado de cart en el Context - Provider
     setCart(newCart)
 }
 
@@ -42,8 +49,11 @@ const incPizzaCount = (cart, setCart, pizza) => {
 /* *********** COMPONENTE CART (CARRITO DE COMPRAS) *********** */
 /************************************************************** */
 const Cart = () => {
+    /* Acceso estado cart y setter setCart definido en Context - Provider CartContext.jsx */
+    const {cart, setCart} = useContext(CartContext)
+
     /* ESTADO PARA MANIPULAR EL ARREGLO DE PIZZAS EN EL CARRITO DE COMPRAS */
-    const [cart, setCart] = useState(pizzaCart)
+    const [cartLocal, setCartLocal] = useState(pizzaCart)
 
     {/* RENDERIZAR LA INFORMACIÓN DE CADA PIZZA QUE SE ENCUENTRA EN EL CARRITO DE COMPRAS */}
     const renderPizzaInCart = (pizza) => {
@@ -63,13 +73,13 @@ const Cart = () => {
                 <p>{"$" + price.toLocaleString('es-CL')}</p>
                 {/* <p>{"$" + pizzaPrice.toLocaleString('es-CL')}</p> */}
                 {/* BOTÓN DE DECREMENTAR, PERMITE DISMINUIR LA CANTIDAD DE PIZZAS EN EL CARRITO Y SI LA CANTIDAD ES CERO ELIMINA LA PIZZA DEL CARRITO */}
-                <button className="dec-button" onClick={() => decPizzaCount(cart, setCart, pizza)}>-</button>
+                <button className="dec-button" onClick={() => decPizzaCount(cartLocal, setCartLocal, pizza, cart, setCart)}>-</button>
                 {/* MUESTRA LA CANTIDAD DE PIZZAS EN EL CARRITO */}
                 {/* <p>{count}</p> */}
                 {}
                 <p>{count}</p>
                 {/* BOTÓN DE INCREMENTAR, PERMITE AUMENTAR LA CANTIDAD DE PIZZAS EN EL CARRITO */}
-                <button className="inc-button" onClick={() => incPizzaCount(cart, setCart, pizza)}>+</button>
+                <button className="inc-button" onClick={() => incPizzaCount(cartLocal, setCartLocal, pizza, cart, setCart)}>+</button>
             </article>
         </li>
     }
@@ -81,7 +91,7 @@ const Cart = () => {
                 {/* PRODUCTOS A COMPRAR */}
                 <ul className="products-to-buy">
                     {/* SE RENDERIZA LA INFORMACIÓN DE CADA PIZZA QUE SE ENCUENTRA EN EL CARRITO DE COMPRAS */}
-                    {cart.map(renderPizzaInCart)}
+                    {cartLocal.map(renderPizzaInCart)}
                     {/* ************************************ */}
                     
                     {/* ************************************ */}

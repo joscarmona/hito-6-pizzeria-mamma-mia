@@ -1,17 +1,25 @@
 /************************************************************** */
 /* ************************ COMPONENTE ************************ */
 
+import { useContext } from "react"
 import { Link } from "react-router-dom"
+import { CartContext } from "../context/CartContext"
+
+/* FUNCIÓN PARA CALCULAR EL TOTAL A PAGAR */
+const total = (accumulator, currentValue) => accumulator + currentValue.price * currentValue.count
 
 /************************************************************** */
 const Navbar = () => {
-    const total = 25000
+    /* Acceso estado cart y setter setCart definido en Context - Provider CartContext.jsx */
+    const {cart} = useContext(CartContext)
+
     /* VARIABLE INDICA SI EL USUARIO SE ENCUENTRA LOGUEADO O NO */
     // TOKEN = FALSE, INDICA QUE USUARIO NO ESTÁ LOGUEADO Y SE DEBEN MOSTRAR LAS OPCIONES:
     // -- LOGIN Y REGISTER
     // TOKEN = TRUE, INDICA QUE USUARIO ESTÁ LOGUEADO Y SE DEBEN MOSTRAR LAS OPCIONES:
     // -- PROFILE Y LOGOUT
     const token = false
+
     return(
         <nav className="navbar">
             {/* NOMBRE DE LA PÁGINA WEB & LAS OPCIONES */}
@@ -30,7 +38,11 @@ const Navbar = () => {
             {/* UTF-8 EMOJI SHOPPING CART: &#128722; */}
             {/* Link a Cart */}
             <Link to="/cart">
-                <button className="total-shopping-cart">&#128722; Total: ${total.toLocaleString('es-CL')}</button>
+                <button className="total-shopping-cart">&#128722; Total: ${
+                    /* EL MÉTODO .REDUCE() EJECUTA UN FUNCIÓN REDUCTORA POR CADA ELEMENTO*/
+                    /* array.reduce(function(total, currentValue, currentIndex, arr), initialValue) */
+                    cart.reduce(total, 0).toLocaleString('es-CL')
+                }</button>
             </Link>
         </nav>
     )
