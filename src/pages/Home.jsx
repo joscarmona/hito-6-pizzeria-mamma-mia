@@ -1,6 +1,7 @@
 import CardPizza from "../components/CardPizza"
 import Header from "../components/Header"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { CartContext } from "../context/CartContext"
 
 /* PARA CONSULTAR A LA API PIZZAS */
 const getPizzas = async (setPizzas, setMyError) => {
@@ -19,6 +20,7 @@ const getPizzas = async (setPizzas, setMyError) => {
         // console.log(dataPizzas)
         if (dataPizzas) {
             setPizzas(dataPizzas)
+            // console.log(dataPizzas)
             setMyError("")
         } else { // EN CASO QUE HAYA NO INFORMACION dataPizzas
             throw new Error("No data found in API response")                
@@ -33,6 +35,9 @@ const getPizzas = async (setPizzas, setMyError) => {
 /* ************************ COMPONENTE ************************ */
 /* ************************************************************ */
 const Home = () => {
+    /* Acceso estado cart y setter setCart definido en Context - Provider CartContext.jsx */
+    const {cart, setCart} = useContext(CartContext)
+
     /* GUARDAR LA CONSULTA REALIZADA LA API PIZZAS */
     const [pizzas,setPizzas] = useState([])
     const [myError, setMyError] = useState("")

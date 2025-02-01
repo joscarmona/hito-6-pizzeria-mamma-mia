@@ -20,7 +20,7 @@ body{
   'navbar'
   'home'
   'footer';
-  grid-template-rows: 0.4fr 8fr 0.6fr;
+  /* grid-template-rows: 0.4fr 8fr 0.6fr; */
   /* gap: 20px; */
 }
 
@@ -59,6 +59,17 @@ body{
   border: 1px solid;
   border-radius: 5px;
   padding: 0.4em 0.8em;
+}
+
+.buttonLogoutNavbar{
+  text-decoration: none;
+  background-color: #1F1F1F;
+  color: #e5e8e9e7;
+  font-size: smaller;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 0.4em 0.8em;
+  cursor: pointer;
 }
 
 /* ****** PRECIO TOTAL DE LOS PRODUCTOS AGREGADOS AL CARRO ****** */

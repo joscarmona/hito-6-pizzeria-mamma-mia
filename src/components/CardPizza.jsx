@@ -1,11 +1,85 @@
-/************************************************************** */
-/* ************************ COMPONENTE ************************ */
-/************************************************************** */
-// const CardPizza = ({name, price, ingredients, img}) => {
+import { useContext, useState } from "react"
+import { CartContext } from "../context/CartContext"
+
+/* ************************************************************ */
+/* ************************* CardPizza ************************ */
+/* ************************************************************ */
 const CardPizza = ({producto}) => {
+    /* Acceso estado cart y setter setCart definido en CartContext.jsx */
+    const {cart, setCart} = useContext(CartContext)
+
+    /* Estado local, estructura de la pizza a agregar al cart (context) para su utilización en el carro de compras (Cart.jsx) */
+    const [pizzaToCart, setPizzaToCart] = useState({
+        id: "",
+        name: "",
+        price: 0,
+        count: 0,
+        img: ""
+    })
+    
     /* DESTRUCTURING PRODUCTO (PROPS) */
     // const {name, price, ingredients, img, desc, id} = producto
-    const {name, price, ingredients, img, desc} = producto
+    const {name, price, ingredients, img, desc, id} = producto
+
+    /* Añadir producto al carro de compras (cart) */
+    const addPizzaToCart = (e) => {
+        e.preventDefault()
+        // Para guardar datos de la pizza
+        let newCart1 = {}
+
+        // Cart vacío se agrega pizza al carrito
+        if (cart.length === 0) {
+            // Guarda los datos de la pizza que se va a agregar al cart
+            newCart1 = {...pizzaToCart, id: id, name: name, price: price, img: img}
+            console.log("newCart1", newCart1)
+
+            // Incrementa la cantidad de la pizza agregada al cart
+            newCart1.count++
+            console.log("newCart1.count++: ", newCart1)
+
+            // Actualiza cart
+            setCart([newCart1])
+
+        } else {
+            console.log("longitud de cart: ", cart.length)
+            // Se guarda el contenido de cart (context)
+            newCart1 = cart
+
+            // Para identificar si la pizza ya fue agregadada antes al cart (context)
+            const index = newCart1.findIndex((elePizza) => elePizza.id === id)
+            console.log("id de pizza añadida: ", id)
+            console.log("valor de index: ", index)
+            console.log("cart no se encuentra vacío, antes del if", newCart1)
+
+            // Pizza se ha agregado antes al cart (context), se incrementa la cantidad en el carrito
+            if (index >= 0) { // Pizza agregadada antes al cart, se incrementa la cantidad
+                console.log("index encontrado:", index)
+                console.log("cart no se encuentra vacío", newCart1)
+                
+                // Incrementa la cantidad de la pizza agregada al cart
+                newCart1[index].count++
+
+                // Actualiza cart
+                setCart([...newCart1])
+                console.log("se aumenta la cantidad de la pizza de ", name, " en el cart")
+
+            } else if (index === -1) { // Se agrega una nueva pizza al cart
+                console.log("index no encontrado: ", index)
+                console.log("se agrega una nueva pizza al cart: pizza", name)
+
+                // Guarda los datos de la pizza que se va a agregar al cart
+                newCart1 = {...pizzaToCart, id: id, name: name, price: price, img: img}
+
+                // Incrementa la cantidad de la pizza agregada al cart
+                newCart1.count++
+                console.log(newCart1)
+
+                // Actualiza cart
+                setCart([...cart, newCart1])
+            }
+        }        
+    }
+
     return (
         /* ****** CARD ****** */
         <article className = "card">
@@ -40,7 +114,7 @@ const CardPizza = ({producto}) => {
                         <button className="button-ver-mas">Ver más &#128064;</button>
                         {/* AÑADIR AL CARRO DE COMPRAS */}
                         {/* UTF-8 EMOJI SHOPPING CART: &#128722; */}
-                        <button className="button-add-carro">Añadir &#128722;</button>
+                        <button className="button-add-carro" onClick={addPizzaToCart}>Añadir &#128722;</button>
                     </div>
                 </div>
             </div>

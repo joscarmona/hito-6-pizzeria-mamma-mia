@@ -53,7 +53,8 @@ const Cart = () => {
     const {cart, setCart} = useContext(CartContext)
 
     /* ESTADO PARA MANIPULAR EL ARREGLO DE PIZZAS EN EL CARRITO DE COMPRAS */
-    const [cartLocal, setCartLocal] = useState(pizzaCart)
+    // const [cartLocal, setCartLocal] = useState(pizzaCart)
+    const [cartLocal, setCartLocal] = useState(cart)
 
     {/* RENDERIZAR LA INFORMACIÓN DE CADA PIZZA QUE SE ENCUENTRA EN EL CARRITO DE COMPRAS */}
     const renderPizzaInCart = (pizza) => {
@@ -101,7 +102,8 @@ const Cart = () => {
                     Total: ${
                         /* EL MÉTODO .REDUCE() EJECUTA UN FUNCIÓN REDUCTORA POR CADA ELEMENTO*/
                         /* array.reduce(function(total, currentValue, currentIndex, arr), initialValue) */
-                        pizzaCart.reduce(total, 0).toLocaleString('es-CL')
+                        // pizzaCart.reduce(total, 0).toLocaleString('es-CL')
+                        cart.reduce(total, 0).toLocaleString('es-CL')
                     }
                 </h2>
                 {/* IR A PAGAR */}

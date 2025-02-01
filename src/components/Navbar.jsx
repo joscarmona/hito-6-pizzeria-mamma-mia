@@ -10,7 +10,7 @@ const total = (accumulator, currentValue) => accumulator + currentValue.price * 
 
 /************************************************************** */
 const Navbar = () => {
-    /* Acceso estado cart y setter setCart definido en Context - Provider CartContext.jsx */
+    /* Acceso estado cart definido en Context - Provider CartContext.jsx (en este caso no se utiliza el setter setCart) */
     const {cart} = useContext(CartContext)
 
     /* VARIABLE INDICA SI EL USUARIO SE ENCUENTRA LOGUEADO O NO */
@@ -59,7 +59,8 @@ const UsarioLogueado = () =>{
             {/* Link a Profile */}
             <Link to="/profile" className="link-opcion" >&#128275; Profile</Link>
             {/* UTF-8 EMOJI LOCK: &#128274; */}
-            <a href="" className="link-opcion" >&#128274; Logout</a>
+            {/* <a href="" className="link-opcion" >&#128274; Logout</a> */}
+            <button className="buttonLogoutNavbar" >&#128274; Logout</button>
         </>
     )
 }
